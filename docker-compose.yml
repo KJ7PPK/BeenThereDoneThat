@@ -1,12 +1,11 @@
+version: "3"
 services:
   beentheredonethat:
-    image: ghcr.io/kj7ppk/been-there-done-that:latest
-    container_name: beentheredonethat
+    build: .
     ports:
       - "8016:8000"
     volumes:
       - ./data:/app/data
     environment:
-      - APP_USER=Whomever
       - TZ=America/Los_Angeles
     restart: unless-stopped
