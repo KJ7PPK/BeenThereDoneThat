@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head><title>Import Result</title></head>
+<body>
+<h2>Imported Entries:</h2>
+<ul>
+{% for entry in entries %}
+    <li>{{ entry.date }}: {{ entry.airline }} from {{ entry.from }} to {{ entry.to }}</li>
+{% endfor %}
+</ul>
+<a href="/">Back</a>
+</body>
+</html>
