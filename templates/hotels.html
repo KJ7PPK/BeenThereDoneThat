@@ -1,0 +1,11 @@
+{% extends "_base.html" %}
+{% block content %}
+  <h2>Add Hotel Stay</h2>
+  <form action="/hotels" method="post">
+    <label>Brand <input type="text" name="brand" required></label><br>
+    <label>Location <input type="text" name="location" required></label><br>
+    <label>Check-in <input type="date" name="checkin" required></label><br>
+    <label>Check-out <input type="date" name="checkout" required></label><br>
+    <button type="submit">Add Hotel</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+jinja2
+python-multipart
+sqlalchemy
+databases[sqlite]
+pydantic
+python-dotenv
+openpyxl       # for any Excel imports later

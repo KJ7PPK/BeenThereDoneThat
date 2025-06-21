@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Been There, Done That</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
+</head>
+<body>
+  <header>
+    <h1>Been There, Done That 📍</h1>
+    <nav>
+      <a href="/">Home</a> |
+      <a href="#" onclick="document.getElementById('importFileInput').click()">Import Flights</a>
+      <!-- you can add links for Hotels/Cruses etc. here later -->
+    </nav>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  <script src="/static/js/app.js"></script>
+
+<input type="file" id="importFileInput" name="file" accept=".csv" style="display:none" />
+<script>
+document.getElementById("importFileInput").addEventListener("change", function() {
+  const file = this.files[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  fetch("/import-openflights", {
+    method: "POST",
+    body: formData
+  }).then(res => {
+    if (res.redirected) {
+      window.location.href = res.url;
+    } else {
+      location.reload();
+    }
+  }).catch(err => {
+    alert("Import failed: " + err.message);
+  });
+});
+</script>
+</body>
+
+</html>

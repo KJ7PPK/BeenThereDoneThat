@@ -1,0 +1,12 @@
+{% extends "_base.html" %}
+{% block content %}
+<h2>Import Flights from OpenFlights CSV</h2>
+<form action="/import-openflights" method="post" enctype="multipart/form-data">
+  <input type="file" name="file" accept=".csv" required />
+  <button type="submit">Import</button>
+</form>
+
+{% if message %}
+  <p><strong>{{ message }}</strong></p>
+{% endif %}
+{% endblock %}

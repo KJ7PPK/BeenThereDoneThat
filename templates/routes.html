@@ -1,0 +1,16 @@
+{% extends "_base.html" %}
+{% block content %}
+  <h2>Add Route / Train</h2>
+  <form action="/routes" method="post">
+    <label>Mode:
+      <select name="mode">
+        <option value="drive">Drive</option>
+        <option value="train">Train</option>
+      </select>
+    </label><br>
+    <label>Origin <input type="text" name="origin" required></label><br>
+    <label>Destination <input type="text" name="destination" required></label><br>
+    <label>Date <input type="date" name="traveled_on"></label><br>
+    <button type="submit">Add Route</button>
+  </form>
+{% endblock %}

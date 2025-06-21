@@ -1,11 +1,10 @@
-version: "3"
+version: '3.8'
 services:
-  beentheredonethat:
+  been-there:
     build: .
+    container_name: beentheredonethat
     ports:
-      - "8016:8000"
+      - "8000:8000"
     volumes:
       - ./data:/app/data
-    environment:
-      - TZ=America/Los_Angeles
     restart: unless-stopped

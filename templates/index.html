@@ -1,14 +1,67 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Been There, Done That</title>
-</head>
-<body>
-    <h1>Been There, Done That</h1>
-    <form action="/import-openflights" method="post" enctype="multipart/form-data">
-        <label>Import OpenFlights CSV:</label><br>
-        <input type="file" name="file" required><br>
-        <button type="submit">Upload</button>
-    </form>
-</body>
-</html>
+{% extends "_base.html" %}
+{% block content %}
+  
+
+<form action="/import-flights" method="post" enctype="multipart/form-data">
+  
+  
+
+
+
+  <p><strong>{{ message }}</strong></p>
+
+
+<section class="stats">
+
+
+    <strong>Flights:</strong> {{ stats.plane }} ({{ stats.total_miles }} mi) |
+    <strong>Hotels:</strong> {{ stats.hotel }} ({{ stats.total_nights }} nights) |
+    <strong>Cruises:</strong> {{ stats.cruise }} |
+    <strong>Drives:</strong> {{ stats.drive }} |
+    <strong>Trains:</strong> {{ stats.train }} |
+    <strong>Visited:</strong> {{ stats.visited }}
+  </section>
+  <div id="map" style="height:75vh;"></div>
+  <script>
+    const map = L.map('map').setView([20,0],2);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    const layers = {
+      plane: L.layerGroup().addTo(map),
+      hotel: L.layerGroup().addTo(map),
+      cruise: L.layerGroup().addTo(map),
+      drive: L.layerGroup().addTo(map),
+      train: L.layerGroup().addTo(map),
+      visited: L.layerGroup().addTo(map)
+    };
+
+    const entries = {{ entries|tojson }};
+    entries.forEach(e => {
+      let popup = e.name;
+      if (e.type==='plane') {
+        if (e.origin_latitude && e.origin_longitude) {
+          L.circleMarker([e.origin_latitude,e.origin_longitude],{radius:4,color:'blue'})
+            .bindPopup(popup).addTo(layers.plane);
+        }
+        if (e.destination_latitude && e.destination_longitude) {
+          L.circleMarker([e.destination_latitude,e.destination_longitude],{radius:4,color:'blue'})
+            .addTo(layers.plane);
+        }
+      }
+      else if (e.type==='visited') {
+        L.marker([e.origin_latitude,e.origin_longitude])
+          .bindPopup(popup).addTo(layers.visited);
+      }
+      // hotels, cruises, routes, train have no coords by default
+    });
+
+    L.control.layers(null,{
+      "Flights":layers.plane,
+      "Hotels":layers.hotel,
+      "Cruises":layers.cruise,
+      "Drives":layers.drive,
+      "Trains":layers.train,
+      "Visited":layers.visited
+    }).addTo(map);
+  </script>
+{% endblock %}
